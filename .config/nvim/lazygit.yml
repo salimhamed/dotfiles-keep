@@ -1,0 +1,17 @@
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+gui:
+  showIcons: true
+  nerdFontsVersion: 3
+keybinding:
+  files:
+    toggleStagedAll: "<c-a>" # avoid "stage/unstage all" since it hangs lazygit, cause I guess it tries to list all files
+os:
+  edit: "nvim --server $NVIM --remote-tab {{filename}}"
+  # TODO: --remote-tab does not seem to support line numbers
+  # editAtLine: "nvim --server $NVIM --remote-tab +{{line}} {{filename}}"
+  editAtLine: "nvim --server $NVIM --remote-tab {{filename}}"
+  editAtLineAndWait: "nvim --server $NVIM --remote-tab {{filename}}"
+  editInTerminal: false

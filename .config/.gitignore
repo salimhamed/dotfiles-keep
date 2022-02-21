@@ -1,0 +1,12 @@
+AWSVPNClient/
+configstore/
+expressvpn/
+github-copilot/
+op/
+nnn/
+kitty/
+jgit/
+iterm2/
+
+lazygit/state.yml
+gh/hosts.yml

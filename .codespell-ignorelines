@@ -1,0 +1,2 @@
+  map("n", "gr", lsp_utils.references, { desc = "[LSP] Show (r)eferences" })
+

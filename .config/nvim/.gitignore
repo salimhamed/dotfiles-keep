@@ -1,0 +1,33 @@
+plugin/
+.luarc.json
+
+^.Brewfile.lock.json$
+^.CFUserTextEncoding$
+^.NERDTreeBookmarks$
+^.cache$
+^.cups$
+^.gnupg$
+^.lesshst$
+^.npm$
+^.nvm$
+^.pyenv$
+^.rbenv$
+^.thumbnails$
+^.viminfo$
+^.zcompdump.*$
+^.zprofile.bak$
+^.zsh_history$
+^.zsh_sessions$
+
+- directories
+^Applications$
+^Desktop$
+^Documents$
+^Google Drive$
+^Library$
+^Movies$
+^Music$
+^Pictures$
+^Postman$
+^Public$
+^SynologyDrive$

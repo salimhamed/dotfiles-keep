@@ -1,0 +1,22 @@
+[user]
+    name = Salim Hamed
+    email = salimhamed@gmail.com
+[core]
+    editor = vim
+    autocrlf = input
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[rerere]
+    enabled = true
+[pull]
+    ff = only
+[init]
+    defaultBranch = main
+[remote]
+    prune = true
+[include]
+    path = .gitconfig.local
+

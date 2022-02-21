@@ -1,0 +1,159 @@
+" rebind <Leader> key
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+
+" turn on relative line numbers
+set relativenumber
+set number 
+
+" searching
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+
+" bind nohl to remove highlight of your last search
+nnoremap <C-n> :nohlsearch<CR>
+vnoremap <C-n> :nohlsearch<CR>
+inoremap <C-n> <C-o>:nohlsearch<CR>
+
+" install plugins
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'dbakker/vim-paragraph-motion'
+Plug 'preservim/nerdtree'
+
+" use the system clipboard
+set clipboard=unnamed
+
+" configure which-key
+set which-key
+set notimeout  " do not close the which-key window
+let g:WhichKey_ShowVimActions = "true"  " display default vim actions
+let g:WhichKey_DefaultDelay = 300  " default is 200ms
+
+" keymaps for vim-easymotion
+
+" search backward
+map <leader>J <Plug>(easymotion-s)
+" search forward
+map <leader>j <Plug>(easymotion-f)
+
+" easier moving of code blocks
+vnoremap < <gv
+vnoremap > >gv
+
+" Decrease/Increase window height
+nmap <S-Down> <Action>(StretchSplitToBottom)
+nmap <S-Up> <Action>(StretchSplitToTop)
+
+" Decrease/Increase window width
+nmap <S-Left> <Action>(StretchSplitToLeft)
+nmap <S-Right> <Action>(StretchSplitToRight)
+
+" turn off annoying bell
+set noerrorbells
+
+" bind Ctrl+<movement> keys to move around the windows
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+map <c-h> <c-w>h
+
+" Better paste
+vnoremap p "_dP
+
+" Save current buffer
+nmap <C-S> :w<CR>
+
+" Keep cursor centered when moving 1/2 pages
+nmap <C-d> <C-d>zz
+nmap <C-u> <C-u>zz
+
+" Keep cursor centered when moving through search results and open folds
+nmap n nzzzv
+nmap N Nzzzv
+
+" open project window
+let g:WhichKeyDesc_toggle_project = "<leader>e  Project Tool Window"
+nmap <leader>e :NERDTreeToggle<CR>
+
+" improve fold definitions
+let g:WhichKeyDesc_fold_close_all_folds = "zM  Close all folds"
+let g:WhichKeyDesc_fold_open_all_folds = "zR  Open all folds"
+let g:WhichKeyDesc_fold_close_fold_under_cursor = "zc  Close fold under cursor"
+let g:WhichKeyDesc_fold_open_fold_under_cursor = "zo  Open fold under cursor"
+
+" add missing fold commands
+let g:WhichKeyDesc_fold_close_all_folds_under_cursor = "zC  Close all folds under the cursor"
+nmap zC <Action>(CollapseRegionRecursively)
+
+let g:WhichKeyDesc_fold_open_all_folds_under_cursor = "zO  Open all folds under the cursor"
+nmap zO <Action>(ExpandRegionRecursively)
+
+" keymaps for finding things
+let g:WhichKeyDesc_find = "<leader>f  Find or Search"
+
+let g:WhichKeyDesc_find_everywhere = "<leader>fe  Search Everywhere"
+nmap <leader>fe <Action>(SearchEverywhere)
+
+let g:WhichKeyDesc_find_class = "<leader>fc  Find Class"
+nmap <leader>fc <Action>(GotoClass)
+
+let g:WhichKeyDesc_find_action = "<leader>fa  Search Actions"
+nmap <leader>fa <Action>(GotoAction)
+
+let g:WhichKeyDesc_find_file = "<leader>ff  Find File"
+nmap <leader>ff <Action>(GotoFile)
+
+let g:WhichKeyDesc_find_symbol = "<leader>fs  Find Symbol"
+nmap <leader>fs <Action>(GotoSymbol)
+
+let g:WhichKeyDesc_find_grep = "<leader>fp  Search Within Files"
+nmap <leader>fp <Action>(FindInPath)
+
+" keymaps for terminal
+map <C-\> <Action>(ActivateTerminalToolWindow)
+
+" add missing keymaps for windows
+let g:WhichKeyDesc_windows_close = "<⌃-w>q  Close Window"
+nmap <C-w>q <Action>(CloseAllEditors)
+
+" keymaps for cycling through tabs
+let g:WhichKeyDesc_buffers_next = "<S-l>  Next Tab"
+nmap <S-l> <Action>(NextTab)
+
+let g:WhichKeyDesc_buffers_previous = "<S-h>  Previous Buffer"
+nmap <S-h> <Action>(PreviousTab)
+
+" keymaps for "buffer" management
+let g:WhichKeyDesc_buffers = "<leader>b  Buffers"
+
+let g:WhichKeyDesc_buffers_close = "<leader>bd  (d)elete buffer"
+nmap <leader>bd :bd<CR>
+
+let g:WhichKeyDesc_buffers_close_to_right = "<leader>br  Close buffers to (r)ight"
+nmap <leader>br <Action>(CloseAllToTheRight)
+
+let g:WhichKeyDesc_buffers_close_to_left = "<leader>bl  Close buffers to (l)eft"
+nmap <leader>bl <Action>(CloseAllToTheLeft)
+
+let g:WhichKeyDesc_buffers_close_all_but_current = "<leader>ba  Close (a)ll but current buffer"
+nmap <leader>ba <Action>(CloseAllEditorsButActive)
+
+let g:WhichKeyDesc_buffers_move_to_opposite_tab_group = "<leader>bm  (m)ove to opposite window"
+nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
+
+let g:WhichKeyDesc_buffers_split_and_move_right = "<leader>b<⌃-v>  Split and move right"
+nmap <leader>b<C-v> <Action>(MoveTabRight)
+
+let g:WhichKeyDesc_buffers_split_and_move_down = "<leader>b<⌃-->  Split and move down"
+nmap <leader>b<C--> <Action>(MoveTabDown)
+
+" lsp keymaps
+let g:WhichKeyDesc_lsp_goto_references = "gr  Goto (r)eferences"
+nmap gr <Action>(FindUsages)
+
+let g:WhichKeyDesc_lsp_goto_quick_implementations = "gq  Goto (q)uick implementations"
+nmap gq <Action>(QuickImplementations)
