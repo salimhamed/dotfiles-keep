@@ -26,8 +26,8 @@ function M.config(_, _)
   map("n", "<leader>bl", "<Cmd>BufferCloseBuffersLeft<CR>", { desc = "Close buffers to the (l)eft" })
   map("n", "<leader>br", "<Cmd>BufferCloseBuffersRight<CR>", { desc = "Close buffers to the (r)ight" })
 
-  map("n", "<leader>b<C-v>", v_split_and_move, { desc = "Split and Move Right" })
-  map("n", "<leader>b<C-_>", h_split_and_move, { desc = "Split and Move Down" }) -- "_" is equivalent to "-"
+  map("n", "<leader>bv", v_split_and_move, { desc = "Split and Move Right" })
+  map("n", "<leader>b-", h_split_and_move, { desc = "Split and Move Down" })
 end
 
 return M
