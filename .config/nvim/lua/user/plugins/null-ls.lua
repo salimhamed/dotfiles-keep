@@ -54,7 +54,7 @@ function M.config(_, _)
       null_ls.builtins.diagnostics.shellcheck,
       null_ls.builtins.formatting.shfmt.with({
         extra_args = { "--indent", "4", "--case-indent" },
-        filetypes = { "sh", "zsh" },
+        filetypes = { "sh", "zsh", "bash" },
       }),
 
       -- markdown

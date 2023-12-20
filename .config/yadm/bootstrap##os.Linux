@@ -8,9 +8,9 @@ type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
 
 # add gh cli to apt sources
 echo "Adding gh cli to apt sources..."
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
 
 # update packages
 sudo apt update
@@ -42,6 +42,8 @@ APT_PACKAGES=(
     gh
     tmux
     zsh
+    pipx
+    shellcheck
 )
 
 sudo apt install -y "${APT_PACKAGES[@]}"
@@ -116,3 +118,44 @@ install_nerd_font() {
 }
 
 install_nerd_font "JetBrainsMono"
+
+# install python applications with pipx
+install_or_update_app_with_pipx() {
+    for package in "$@"; do
+        if ! command -v "${package}" >/dev/null 2>&1; then
+            echo "Installing ${package} with pipx"
+            pipx install "${package}"
+        else
+            echo "Upgrading ${package} with pipx"
+            pipx upgrade "${package}"
+        fi
+    done
+}
+
+pipx ensurepath
+
+install_or_update_app_with_pipx "black" \
+    "codespell" \
+    "flake8" \
+    "isort" \
+    "mypy" \
+    "pycodestyle" \
+    "pylint" \
+    "virtualenv" \
+    "pipenv" \
+    "hatch" \
+    "tox"
+
+# install go
+TMP_GO_DIR=$(mktemp -d /tmp/go-XXXXXX)
+GO_VERSION="1.21.5"
+GO_TARBALL="go${GO_VERSION}.linux-amd64.tar.gz"
+
+echo "Installing Go ${GO_VERSION}..."
+wget -P "${TMP_GO_DIR}" "https://go.dev/dl/${GO_TARBALL}"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "${TMP_GO_DIR}/${GO_TARBALL}"
+
+# install shfmt
+echo "Installing shfmt..."
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
