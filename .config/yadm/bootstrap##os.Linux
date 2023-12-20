@@ -1,142 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
 # prompt for system password
 sudo -v
 
-# install homebrew if it's missing
-if ! command -v brew >/dev/null 2>&1; then
-    echo "Installing homebrew..."
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi
+# update packages
+sudo apt update
 
-# install homebrew packages
-if [ -f "$HOME/.Brewfile" ]; then
-    echo "Updating homebrew bundle..."
-    brew bundle --global
-    brew bundle cleanup --global --force
-fi
+# upgrade all installed packages
+sudo apt upgrade -y
 
-# in some cases after prettierd is updated, it needs to be restarted
-prettierd restart
+# install packages
+PACKAGES=(
+    curl
+    gnupg2
+    gdebi
+    bat
+    vim-gtk3
+)
 
-# install nvm
-if [ ! -d "$HOME/.nvm" ]; then
-    echo "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-fi
+sudo apt install -y "${PACKAGES[@]}"
 
-# install luacheck
-echo "Installing luacheck..."
-luarocks install luacheck
+# cleanup packages that are not needed
+sudo apt autoremove -y
 
-# turn off behavior to support accents when holding down key
-# https://stackoverflow.com/a/39733008/3112403
-echo "Turn off default Mac support for accents..."
-defaults write -g ApplePressAndHoldEnabled -bool false
-
-# install oh-my-zsh if it's missing
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Installing oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
-fi
-
-# define helpers for managing zsh plugins
-zsh_custom_dir="${HOME}/.oh-my-zsh-custom"
-install_oh_my_zsh_plugin() {
-    _clone_if_not_exists_repo_url="$1"
-    _clone_if_not_exists_plugin_name="$2"
-    _clone_if_not_exists_target_dir="${zsh_custom_dir}/plugins/${_clone_if_not_exists_plugin_name}"
-
-    if [ ! -d "${_clone_if_not_exists_target_dir}" ]; then
-        echo "Installing ${_clone_if_not_exists_plugin_name}..."
-        git clone "${_clone_if_not_exists_repo_url}.git" "${_clone_if_not_exists_target_dir}"
-    fi
-}
-
-# install custom zsh plugins
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-completions" "zsh-completions"
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-syntax-highlighting" "zsh-syntax-highlighting"
-
-# update yadm auto completion script
-echo "Installing/updating yadm completion..."
-curl --location --silent https://raw.githubusercontent.com/TheLocehiliosan/yadm/master/completion/zsh/_yadm --output "${zsh_custom_dir}/completions/_yadm"
-
-# update luarocks auto completion script
-echo "Installing/updating luarocks completion..."
-luarocks completion zsh >"${zsh_custom_dir}/completions/_luarocks"
-
-# install global version of python
-echo "Installing/updating global version of python..."
-PY_VERSION=3.11.3
-pyenv install --skip-existing "${PY_VERSION}"
-pyenv global "${PY_VERSION}"
-pyenv exec pip install --upgrade pip
-
-# install python applications
-install_or_update_app_with_pipx() {
-    for package in "$@"; do
-        if ! command -v "${package}" >/dev/null 2>&1; then
-            echo "Installing ${package} with pipx"
-            pipx install "${package}"
-        else
-            echo "Upgrading ${package} with pipx"
-            pipx upgrade "${package}"
-        fi
-    done
-}
-
-install_or_update_app_with_pipx "black" \
-    "codespell" \
-    "flake8" \
-    "isort" \
-    "mypy" \
-    "pycodestyle" \
-    "pylint" \
-    "virtualenv" \
-    "pipenv" \
-    "hatch" \
-    "tox"
-
-# install python applications that cannot be installed with pipx in a venv
-virtual_env_directory="${HOME}/.local/share/virtualenvs"
-venv_python_executable="${virtual_env_directory}/cli/bin/python"
-
-mkdir -p "${virtual_env_directory}"
-if ! command -v "${venv_python_executable}" >/dev/null 2>&1; then
-    echo "Creating python venv for cli tools at ${virtual_env_directory}/cli..."
-    virtualenv "${virtual_env_directory}/cli"
-fi
-
-echo "Installing python cli tools into ${virtual_env_directory}/cli venv..."
-"${virtual_env_directory}/cli/bin/python" -m pip install debugpy
-
-# install global version of node
-echo "Installing/updating global version of node..."
-NODE_VERSION="v18.15.0"
-
-export NVM_DIR="$HOME/.nvm"
-# shellcheck source=/dev/null
-[ -s "$NVM_DIR/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh"
-nvm install "${NODE_VERSION}"
-nvm alias default "${NODE_VERSION}"
-
-# install node applications
-npm install -g @taplo/cli prettier
-
-# install tmux plugin manager
-if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
-    echo "Installing tmux plugin manager..."
-    mkdir -p "${HOME}/.tmux/plugins"
-    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
-fi
-
-# install or update aws cli
-tmp_aws_dir=$(mktemp -d)
-curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "${tmp_aws_dir}/AWSCLIV2.pkg"
-sudo installer -pkg "${tmp_aws_dir}/AWSCLIV2.pkg" -target /
-rm -rf "${tmp_aws_dir}"
-
-# update tldr cache
-echo "Updating the tldr cache..."
-tldr --update
