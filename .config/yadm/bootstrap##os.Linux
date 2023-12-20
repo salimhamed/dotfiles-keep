@@ -16,10 +16,79 @@ PACKAGES=(
     gdebi
     bat
     vim-gtk3
+    cmake
+    pkg-config
+    libfreetype6-dev
+    libfontconfig1-dev
+    libxcb-xfixes0-dev
+    libxkbcommon-dev
+    python3
+    libegl1-mesa-dev
 )
 
 sudo apt install -y "${PACKAGES[@]}"
 
 # cleanup packages that are not needed
 sudo apt autoremove -y
+
+# install rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+source "${HOME}/.cargo/env"
+rustup override set stable
+rustup update stable
+
+# create directory to clone manually installed applications
+APPS_DIR="${HOME}/Apps"
+mkdir -p "${APPS_DIR}"
+
+# install alacritty
+ALACRITTY_DIR="${APPS_DIR}/alacritty"
+
+if [ -d "${ALACRITTY_DIR}" ]; then
+    echo "Alacritty directory exists. Updating..."
+    cd "${ALACRITTY_DIR}"
+    git pull
+else
+    echo "Cloning Alacritty for the first time..."
+    git clone https://github.com/alacritty/alacritty.git "${ALACRITTY_DIR}"
+    cd "${ALACRITTY_DIR}"
+fi
+
+cargo build --release
+
+ALACRITTY_SYMLINK="/usr/local/bin/alacritty"
+
+if [ -L "${ALACRITTY_SYMLINK}" ]; then
+    echo "Symbolic link to Alacrity already exists. Updating..."
+    sudo rm "${ALACRITTY_SYMLINK}"
+    sudo ln -s "${ALACRITTY_DIR}/target/release/alacritty" "${ALACRITTY_SYMLINK}"
+else
+    echo "Creating a symbolic link for Alacritty..."
+    sudo ln -s "${ALACRITTY_DIR}/target/release/alacritty" "${ALACRITTY_SYMLINK}"
+fi
+
+cd "${HOME}"
+
+# install nerd fonts
+
+install_nerd_font() {
+    local font_name=$1
+    local NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts/releases/download"
+    local NERD_FONT_VERSION="v3.1.1"
+    local TMP_NERDFONT_DIR=$(mktemp -d /tmp/nerdfonts-XXXXXX)
+
+    echo "Installing Nerd Font $font_name..."
+
+    # Download and unzip the font
+    wget "${NERD_FONT_REPO}/${NERD_FONT_VERSION}/${font_name}.zip" -O "${TMP_NERDFONT_DIR}/${font_name}.zip"
+    unzip -o "${TMP_NERDFONT_DIR}/${font_name}.zip" -d ~/.fonts
+
+    # Clean up temporary files
+    rm -rf "${TMP_NERDFONT_DIR}"
+
+    # Update font cache
+    fc-cache -fv
+}
+
+install_nerd_font "JetBrainsMono"
 
