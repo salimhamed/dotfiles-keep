@@ -45,7 +45,7 @@ let mapleader = ","
 
 "copy & paste
 set pastetoggle=<F2> "toggles paste mode using <F2>
-set clipboard=unnamed "use the system clipboard
+set clipboard=unnamedplus "use the system clipboard
 
 "mouse and backspace
 set mouse=a  "on OSX press ALT and click
