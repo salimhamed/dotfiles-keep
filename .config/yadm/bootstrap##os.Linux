@@ -3,6 +3,15 @@
 # prompt for system password
 sudo -v
 
+# ensure curl is installed
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+
+# add gh cli to apt sources
+echo "Adding gh cli to apt sources..."
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+
 # update packages
 sudo apt update
 
@@ -24,6 +33,10 @@ PACKAGES=(
     libxkbcommon-dev
     python3
     libegl1-mesa-dev
+    fzf
+    exa
+    fd-find
+    gh
 )
 
 sudo apt install -y "${PACKAGES[@]}"
@@ -70,25 +83,27 @@ fi
 cd "${HOME}"
 
 # install nerd fonts
-
 install_nerd_font() {
     local font_name=$1
     local NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts/releases/download"
     local NERD_FONT_VERSION="v3.1.1"
     local TMP_NERDFONT_DIR=$(mktemp -d /tmp/nerdfonts-XXXXXX)
 
-    echo "Installing Nerd Font $font_name..."
+    if fc-list | grep -qi "$font_name"; then
+        echo "Font $font_name is already installed. Skipping..."
+    else
+        echo "Installing Nerd Font $font_name..."
+        # Download and unzip the font
+        wget "${NERD_FONT_REPO}/${NERD_FONT_VERSION}/${font_name}.zip" -O "${TMP_NERDFONT_DIR}/${font_name}.zip"
+        unzip -o "${TMP_NERDFONT_DIR}/${font_name}.zip" -d ~/.fonts
 
-    # Download and unzip the font
-    wget "${NERD_FONT_REPO}/${NERD_FONT_VERSION}/${font_name}.zip" -O "${TMP_NERDFONT_DIR}/${font_name}.zip"
-    unzip -o "${TMP_NERDFONT_DIR}/${font_name}.zip" -d ~/.fonts
+        # Clean up temporary files
+        rm -rf "${TMP_NERDFONT_DIR}"
 
-    # Clean up temporary files
-    rm -rf "${TMP_NERDFONT_DIR}"
+        # Update font cache
+        fc-cache -fv
+    fi
 
-    # Update font cache
-    fc-cache -fv
 }
 
 install_nerd_font "JetBrainsMono"
-

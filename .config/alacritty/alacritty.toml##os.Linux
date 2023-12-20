@@ -38,7 +38,7 @@ shape = "Block"
 TERM = "xterm-256color"
 
 [font]
-size = 16
+size = 9
 
 [font.bold]
 family = "JetBrainsMono NFM"
@@ -65,7 +65,6 @@ save_to_clipboard = true
 
 [window]
 opacity = 1.0
-option_as_alt = "Both"
 
 [window.padding]
 x = 10
