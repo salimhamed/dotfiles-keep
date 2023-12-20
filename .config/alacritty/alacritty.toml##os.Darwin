@@ -1,3 +1,4 @@
+# vim: set filetype=toml :
 [[colors.indexed_colors]]
 color = "0xff9e64"
 index = 16

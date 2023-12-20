@@ -1,3 +1,4 @@
+# vim: set filetype=toml :
 [[colors.indexed_colors]]
 color = "0xff9e64"
 index = 16
@@ -39,6 +40,11 @@ TERM = "xterm-256color"
 
 [font]
 size = 9
+
+[shell]
+# program = "/usr/bin/zsh"
+program = "/usr/bin/bash"
+args = ["--login"]
 
 [font.bold]
 family = "JetBrainsMono NFM"
