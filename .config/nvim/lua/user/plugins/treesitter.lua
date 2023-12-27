@@ -38,8 +38,6 @@ function M.config()
       "sql",
       "ssh_config",
       "toml",
-      "toml",
-      "tsx",
       "tsx",
       "typescript",
       "vim",

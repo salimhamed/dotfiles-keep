@@ -1,0 +1,161 @@
+#!/bin/bash
+
+# prompt for system password
+sudo -v
+
+# ensure curl is installed
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+
+# add gh cli to apt sources
+echo "Adding gh cli to apt sources..."
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg &&
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list >/dev/null
+
+# update packages
+sudo apt update
+
+# upgrade all installed packages
+sudo apt upgrade -y
+
+# install apt packages
+APT_PACKAGES=(
+    curl
+    gnupg2
+    gdebi
+    bat
+    vim-gtk3
+    cmake
+    pkg-config
+    libfuse2
+    libfreetype6-dev
+    libfontconfig1-dev
+    libxcb-xfixes0-dev
+    libxkbcommon-dev
+    python3
+    python3-dev
+    python3-pip
+    libegl1-mesa-dev
+    fzf
+    exa
+    fd-find
+    gh
+    tmux
+    zsh
+    pipx
+    shellcheck
+)
+
+sudo apt install -y "${APT_PACKAGES[@]}"
+
+# cleanup packages that are not needed
+sudo apt autoremove -y
+
+# install neovim
+# the --classic options is required because nvim was published using classic confinement
+sudo snap install --classic nvim
+
+# install rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -y
+source "${HOME}/.cargo/env"
+rustup override set stable
+rustup update stable
+
+# create directory to clone manually installed applications
+APPS_DIR="${HOME}/Apps"
+mkdir -p "${APPS_DIR}"
+
+# install alacritty
+ALACRITTY_DIR="${APPS_DIR}/alacritty"
+
+if [ -d "${ALACRITTY_DIR}" ]; then
+    echo "Alacritty directory exists. Updating..."
+    cd "${ALACRITTY_DIR}"
+    git pull
+else
+    echo "Cloning Alacritty for the first time..."
+    git clone https://github.com/alacritty/alacritty.git "${ALACRITTY_DIR}"
+    cd "${ALACRITTY_DIR}"
+fi
+
+cargo build --release
+
+ALACRITTY_SYMLINK="/usr/local/bin/alacritty"
+
+if [ -L "${ALACRITTY_SYMLINK}" ]; then
+    echo "Symbolic link to Alacrity already exists. Updating..."
+    sudo rm "${ALACRITTY_SYMLINK}"
+    sudo ln -s "${ALACRITTY_DIR}/target/release/alacritty" "${ALACRITTY_SYMLINK}"
+else
+    echo "Creating a symbolic link for Alacritty..."
+    sudo ln -s "${ALACRITTY_DIR}/target/release/alacritty" "${ALACRITTY_SYMLINK}"
+fi
+
+cd "${HOME}"
+
+# install nerd fonts
+install_nerd_font() {
+    local font_name=$1
+    local NERD_FONT_REPO="https://github.com/ryanoasis/nerd-fonts/releases/download"
+    local NERD_FONT_VERSION="v3.1.1"
+    local TMP_NERDFONT_DIR=$(mktemp -d /tmp/nerdfonts-XXXXXX)
+
+    if fc-list | grep -qi "$font_name"; then
+        echo "Font $font_name is already installed. Skipping..."
+    else
+        echo "Installing Nerd Font $font_name..."
+        # Download and unzip the font
+        wget "${NERD_FONT_REPO}/${NERD_FONT_VERSION}/${font_name}.zip" -O "${TMP_NERDFONT_DIR}/${font_name}.zip"
+        unzip -o "${TMP_NERDFONT_DIR}/${font_name}.zip" -d ~/.fonts
+
+        # Clean up temporary files
+        rm -rf "${TMP_NERDFONT_DIR}"
+
+        # Update font cache
+        fc-cache -fv
+    fi
+
+}
+
+install_nerd_font "JetBrainsMono"
+
+# install python applications with pipx
+install_or_update_app_with_pipx() {
+    for package in "$@"; do
+        if ! command -v "${package}" >/dev/null 2>&1; then
+            echo "Installing ${package} with pipx"
+            pipx install "${package}"
+        else
+            echo "Upgrading ${package} with pipx"
+            pipx upgrade "${package}"
+        fi
+    done
+}
+
+pipx ensurepath
+
+install_or_update_app_with_pipx "black" \
+    "codespell" \
+    "flake8" \
+    "isort" \
+    "mypy" \
+    "pycodestyle" \
+    "pylint" \
+    "virtualenv" \
+    "pipenv" \
+    "hatch" \
+    "tox"
+
+# install go
+TMP_GO_DIR=$(mktemp -d /tmp/go-XXXXXX)
+GO_VERSION="1.21.5"
+GO_TARBALL="go${GO_VERSION}.linux-amd64.tar.gz"
+
+echo "Installing Go ${GO_VERSION}..."
+wget -P "${TMP_GO_DIR}" "https://go.dev/dl/${GO_TARBALL}"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "${TMP_GO_DIR}/${GO_TARBALL}"
+
+# install shfmt
+echo "Installing shfmt..."
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
