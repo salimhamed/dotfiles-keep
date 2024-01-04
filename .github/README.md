@@ -62,8 +62,8 @@ The `<Prefix>` Keybinding has been remapped to `C-a`, replacing the default
 | `<Prefix> f`              | Find window                                              |
 | `<Prefix> w`              | List all windows                                         |
 | `<Prefix> ,`              | Rename window                                            |
-| `<Prefix> v`              | Vertical split pane                                      |
-| `<Prefix> -`              | Horizontal split pane                                    |
+| `<Prefix> C-v`            | Vertical split pane                                      |
+| `<Prefix> C-_`            | Horizontal split pane                                    |
 | `<Prefix> S-Up`           | Resize pane 5 rows up                                    |
 | `<Prefix> S-Down`         | Resize pane 5 rows down                                  |
 | `<Prefix> S-Right`        | Resize pane 5 rows right                                 |
@@ -148,18 +148,18 @@ The `<Leader>` key has been remapped to `" "` (i.e., space).
 
 _Use `<Leader>b` to activate `WhichKey` help._
 
-| Keybinding   | Description                     |
-| ------------ | ------------------------------- |
-| `S-l`        | Switch to buffer to the right   |
-| `S-h`        | Switch to buffer to the left    |
-| `C-^`        | Switch to alternate file        |
-| `<Leader>bv` | Vertical split current buffer   |
-| `<Leader>b-` | Horizontal split current buffer |
-| `<Leader>bd` | Delete buffer                   |
-| `<Leader>bp` | Pin buffer                      |
-| `<Leader>ba` | Close all bug current buffer    |
-| `<Leader>bl` | Close buffers to the left       |
-| `<Leader>br` | Close buffers to the right      |
+| Keybinding       | Description                     |
+| ---------------- | ------------------------------- |
+| `S-l`            | Switch to buffer to the right   |
+| `S-h`            | Switch to buffer to the left    |
+| `C-^`            | Switch to alternate file        |
+| `<Leader>b<C-v>` | Vertical split current buffer   |
+| `<Leader>b<C-_>` | Horizontal split current buffer |
+| `<Leader>bd`     | Delete buffer                   |
+| `<Leader>bp`     | Pin buffer                      |
+| `<Leader>ba`     | Close all bug current buffer    |
+| `<Leader>bl`     | Close buffers to the left       |
+| `<Leader>br`     | Close buffers to the right      |
 
 ##### Harpoon Navigation
 
@@ -198,8 +198,8 @@ details.
 | Keybinding                 | Description                                         |
 | -------------------------- | --------------------------------------------------- |
 | `<Leader>e`                | Toggle Neotree                                      |
-| `v`                        | (Within Neotree) Open file in vsplit                |
-| `_`                        | (Within Neotree) Open file in split                 |
+| `<C-v>`                    | (Within Neotree) Open file in vsplit                |
+| `<C-_>`                    | (Within Neotree) Open file in split                 |
 | `o` or `<CR>` or `<Right>` | (Within Neotree) Toggle directory node or open file |
 | `Left`                     | (Within Neotree) Close directory node               |
 | `y`                        | (Within Neotree) Copy relative path                 |

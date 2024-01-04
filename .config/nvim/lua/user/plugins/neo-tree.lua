@@ -105,10 +105,10 @@ local M = {
           ["<cr>"] = "open_with_window_picker",
           -- remap vsplit
           ["s"] = "none",
-          ["v"] = "vsplit_with_window_picker",
+          ["<C-v>"] = "vsplit_with_window_picker",
           -- remap split horizontal
           ["S"] = "none",
-          ["-"] = "split_with_window_picker",
+          ["<C-_>"] = "split_with_window_picker",
           -- remap toggle preview
           ["P"] = "none",
           ["T"] = "toggle_preview",

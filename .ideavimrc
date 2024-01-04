@@ -145,11 +145,11 @@ nmap <leader>ba <Action>(CloseAllEditorsButActive)
 let g:WhichKeyDesc_buffers_move_to_opposite_tab_group = "<leader>bm  (m)ove to opposite window"
 nmap <leader>bm <Action>(MoveEditorToOppositeTabGroup)
 
-let g:WhichKeyDesc_buffers_split_and_move_right = "<leader>bv  Split and move right"
-nmap <leader>bv <Action>(MoveTabRight)
+let g:WhichKeyDesc_buffers_split_and_move_right = "<leader>b<⌃-v>  Split and move right"
+nmap <leader>b<C-v> <Action>(MoveTabRight)
 
-let g:WhichKeyDesc_buffers_split_and_move_down = "<leader>b-  Split and move down"
-nmap <leader>b- <Action>(MoveTabDown)
+let g:WhichKeyDesc_buffers_split_and_move_down = "<leader>b<⌃-->  Split and move down"
+nmap <leader>b<C--> <Action>(MoveTabDown)
 
 " lsp keymaps
 let g:WhichKeyDesc_lsp_goto_references = "gr  Goto (r)eferences"
