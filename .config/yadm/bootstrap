@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # prompt for system password
 sudo -v
@@ -84,16 +84,17 @@ pyenv exec pip install --upgrade pip
 
 # install python applications
 install_or_update_app_with_pipx() {
+    local pyenv_python
+    pyenv_python="$(pyenv which python)"
+
     for package in "$@"; do
-        if ! command -v "${package}" >/dev/null 2>&1; then
-            echo "Installing ${package} with pipx"
-            pipx install "${package}"
-        else
-            echo "Upgrading ${package} with pipx"
-            pipx upgrade "${package}"
-        fi
+        echo "Installing ${package} with pipx"
+        pipx install --python "${pyenv_python}" "${package}"
     done
 }
+
+# first, uninstall all applications managed by pipx
+pipx uninstall-all
 
 install_or_update_app_with_pipx "black" \
     "codespell" \
