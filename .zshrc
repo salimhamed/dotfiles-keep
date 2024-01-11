@@ -110,6 +110,10 @@ eval "$(register-python-argcomplete pipx)"
 # configure auto completion for pipenv
 eval "$(_PIPENV_COMPLETE=zsh_source pipenv)"
 
-# Manage path
-# ensure `.local/bin` at the front of the path so pipx installed utilities are used before utilities from pyenv environments
+# setup direnv
+eval "$(direnv hook zsh)"
+
+# Manage path.
+#   This should always be last to ensure `.local/bin` is at the front of the path, so
+#   global utilities (and pipx utilities) are used before utilities from pyenv environments
 export PATH="${HOME}/go/bin:${HOME}/.local/bin:${HOME}/bin:/usr/local/bin:${JETBRAINS_TOOLBOX_PATH}:${PATH}"
