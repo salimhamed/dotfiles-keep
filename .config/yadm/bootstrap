@@ -49,32 +49,6 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
 fi
 
-# define helpers for managing zsh plugins
-zsh_custom_dir="${HOME}/.oh-my-zsh-custom"
-install_oh_my_zsh_plugin() {
-    _clone_if_not_exists_repo_url="$1"
-    _clone_if_not_exists_plugin_name="$2"
-    _clone_if_not_exists_target_dir="${zsh_custom_dir}/plugins/${_clone_if_not_exists_plugin_name}"
-
-    if [ ! -d "${_clone_if_not_exists_target_dir}" ]; then
-        echo "Installing ${_clone_if_not_exists_plugin_name}..."
-        git clone "${_clone_if_not_exists_repo_url}.git" "${_clone_if_not_exists_target_dir}"
-    fi
-}
-
-# install custom zsh plugins
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-completions" "zsh-completions"
-install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-syntax-highlighting" "zsh-syntax-highlighting"
-
-# update yadm auto completion script
-echo "Installing/updating yadm completion..."
-curl --location --silent https://raw.githubusercontent.com/TheLocehiliosan/yadm/master/completion/zsh/_yadm --output "${zsh_custom_dir}/completions/_yadm"
-
-# update luarocks auto completion script
-echo "Installing/updating luarocks completion..."
-luarocks completion zsh >"${zsh_custom_dir}/completions/_luarocks"
-
 # install global version of python
 echo "Installing/updating global version of python..."
 PY_VERSION=3.11.3
@@ -106,7 +80,38 @@ install_or_update_app_with_pipx "black" \
     "virtualenv" \
     "pipenv" \
     "hatch" \
-    "tox"
+    "tox" \
+    "poetry"
+
+# define helpers for managing zsh plugins
+zsh_custom_dir="${HOME}/.oh-my-zsh-custom"
+install_oh_my_zsh_plugin() {
+    _clone_if_not_exists_repo_url="$1"
+    _clone_if_not_exists_plugin_name="$2"
+    _clone_if_not_exists_target_dir="${zsh_custom_dir}/plugins/${_clone_if_not_exists_plugin_name}"
+
+    if [ ! -d "${_clone_if_not_exists_target_dir}" ]; then
+        echo "Installing ${_clone_if_not_exists_plugin_name}..."
+        git clone "${_clone_if_not_exists_repo_url}.git" "${_clone_if_not_exists_target_dir}"
+    fi
+}
+
+# install custom zsh plugins
+install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
+install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-completions" "zsh-completions"
+install_oh_my_zsh_plugin "https://github.com/zsh-users/zsh-syntax-highlighting" "zsh-syntax-highlighting"
+
+# update yadm auto completion script
+echo "Installing/updating yadm completion..."
+curl --location --silent https://raw.githubusercontent.com/TheLocehiliosan/yadm/master/completion/zsh/_yadm --output "${zsh_custom_dir}/completions/_yadm"
+
+# update luarocks auto completion script
+echo "Installing/updating luarocks completion..."
+luarocks completion zsh >"${zsh_custom_dir}/completions/_luarocks"
+
+# update poetry auto completion script
+echo "Installing/updating poetry completion..."
+poetry completions zsh >"${zsh_custom_dir}/completions/_poetry"
 
 # install python applications that cannot be installed with pipx in a venv
 virtual_env_directory="${HOME}/.local/share/virtualenvs"
