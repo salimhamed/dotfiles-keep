@@ -80,6 +80,7 @@ install_or_update_app_with_pipx "black" \
     "virtualenv" \
     "pipenv" \
     "hatch" \
+    "argcomplete" \
     "tox" \
     "poetry"
 
