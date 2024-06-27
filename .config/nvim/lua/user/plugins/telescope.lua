@@ -16,7 +16,7 @@ local M = {
     },
   },
   opts = function()
-    local trouble = require("trouble.providers.telescope")
+    local trouble = require("trouble.sources.telescope")
     local actions = require("telescope.actions")
     return {
       defaults = {
@@ -24,12 +24,12 @@ local M = {
           i = {
             ["<C-w>"] = "which_key", -- (default: <C-/>, which is used to open terminal)
             -- similar keymaps to the rest of the neovim setup
-            ["<C-x>"] = trouble.open_with_trouble,
+            ["<C-x>"] = trouble.open,
             ["<C-_>"] = actions.select_horizontal,
           },
           n = {
             -- similar keymaps to the rest of the neovim setup
-            ["<C-x>"] = trouble.open_with_trouble,
+            ["<C-x>"] = trouble.open,
             ["<C-_>"] = actions.select_horizontal,
           },
         },
@@ -92,13 +92,13 @@ function M.config(_, opts)
   map("n", "<leader>ff", builtin.find_files, { desc = "Find (f)iles" })
   map("n", "<leader>fg", builtin.git_files, { desc = "Find (g)it files" })
   map("n", "<leader>fp", builtin.live_grep, { desc = "Search with gre(p)" })
-  map("n", "<leader>fb", builtin.buffers, { desc = "Find (b)uffer" })
+  map("n", "<leader>fb", builtin.buffers, { desc = "Find (b)buffer" })
   map("n", "<leader>fh", builtin.help_tags, { desc = "Find (h)elp tags" })
   map("n", "<leader>fc", builtin.commands, { desc = "Find (c)ommands" })
   map("n", "<leader>fk", builtin.keymaps, { desc = "Find (k)eymaps" })
   map("n", "<leader>fe", file_browser, { desc = "File (e)xplorer" })
   map("n", "<leader>fr", find_recent_files, { desc = "Find (r)ecent files" })
-  map("n", "<leader>fs", builtin.lsp_document_symbols, { desc = "Find buffer (s)ymbols" })
+  map("n", "<leader>fs", builtin.lsp_document_symbols, { desc = "Find buffer (s)symbols" })
   map("n", "<leader>fx", builtin.diagnostics, { desc = "List diagnostics" })
 
   -- yadm keymaps
