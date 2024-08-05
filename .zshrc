@@ -74,7 +74,6 @@ plugins=(
     zsh-syntax-highlighting
     vi-mode
     fzf
-    fd
     pip
     zoxide
     starship
