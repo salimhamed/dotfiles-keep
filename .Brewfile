@@ -7,6 +7,7 @@ tap "teamookla/speedtest"
 tap "fsouza/prettierd"
 
 # install packages
+brew "aichat"
 brew "aws2-wrap"
 brew "bash-completion"
 brew "bat"
