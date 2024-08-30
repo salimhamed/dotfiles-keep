@@ -9,6 +9,7 @@ local M = {
 function M.config(_, _)
   require("which-key").setup()
   require("which-key").add({
+    { "<Leader>a", group = "avante" },
     { "<Leader>b", group = "buffers" },
     { "<Leader>c", group = "code" },
     { "<Leader>d", group = "debug" },
