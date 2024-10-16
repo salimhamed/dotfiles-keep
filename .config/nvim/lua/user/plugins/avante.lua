@@ -2,32 +2,17 @@ local M = {
   "yetone/avante.nvim",
   event = "VeryLazy",
   lazy = false,
-  keys = {
-    {
-      "<leader>aa",
-      function()
-        require("avante.api").ask()
-      end,
-      desc = "avante: ask",
-      mode = { "n", "v" },
-    },
-    {
-      "<leader>ar",
-      function()
-        require("avante.api").refresh()
-      end,
-      desc = "avante: refresh",
-    },
-    {
-      "<leader>ae",
-      function()
-        require("avante.api").edit()
-      end,
-      desc = "avante: edit",
-      mode = "v",
+  version = false,
+  build = "make",
+  opts = {
+    mappings = {
+      ask = "<leader>aa",
+      edit = "<leader>ae",
+      refresh = "<leader>ar",
     },
   },
   dependencies = {
+    "nvim-treesitter/nvim-treesitter",
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
