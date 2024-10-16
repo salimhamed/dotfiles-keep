@@ -77,6 +77,9 @@ The `<Prefix>` Keybinding has been remapped to `C-a`, replacing the default
 | `C-k`                     | Navigate panes up or send C-k to Vim                     |
 | `C-l`                     | Navigate panes right or send C-l to Vim                  |
 | `<Prefix> s`              | Show and select other tmux sessions                      |
+| `<Prefix> w`              | Show and select other tmux windows in current session    |
+| `<Prefix> >`              | Pane show action menu                                    |
+| `<Prefix> <`              | Pane show window action menu                             |
 | `<Prefix> :new -s <name>` | Create a new session, within a tmux session, with a name |
 | `<Prefix> )`              | Goto next session                                        |
 | `<Prefix> (`              | Goto previous session                                    |
