@@ -10,9 +10,6 @@ export PATH="$NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH"
 # install starship
 eval "$(starship init zsh)"
 
-# configure fzf shortcuts
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 # install plugins with zsh_unplugged
 ZPLUGINDIR="${HOME}/.config/zsh/plugins"
 
@@ -30,3 +27,6 @@ plugin_repos=(
 )
 
 plugin-load $plugin_repos
+
+# configure fzf shortcuts
+source <(fzf --zsh)
