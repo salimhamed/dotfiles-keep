@@ -10,7 +10,7 @@ sudo apt update -y
 # install packages from a list
 if [ -f "$HOME/.ubuntu-packages" ]; then
     echo "Installing packages from .ubuntu-packages..."
-    xargs sudo apt install -y < "$HOME/.ubuntu-packages"
+    xargs sudo apt install -y <"$HOME/.ubuntu-packages"
 fi
 
 # upgrade all installed packages
@@ -34,6 +34,12 @@ fi
 echo "Building Neovim from source..."
 sudo snap install --beta nvim --classic
 
+# Install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --bin
+
+# Install
+
 # install nvm
 echo "Installing nvm..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
@@ -56,3 +62,47 @@ install_node
 # install global node applications
 npm install -g @taplo/cli prettier yarn
 
+# install starship
+curl -sS https://starship.rs/install.sh | sh -s -- -y
+
+# install shfmt
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
+
+# install pyenv
+curl https://pyenv.run | bash
+
+# install global version of python
+echo "Installing/updating global version of python..."
+PY_VERSION=3.11.3
+pyenv install --skip-existing "${PY_VERSION}"
+pyenv global "${PY_VERSION}"
+pyenv exec pip install --upgrade pip
+
+# install python applications
+install_or_update_app_with_pipx() {
+    local pyenv_python
+    pyenv_python="$(pyenv which python)"
+
+    for package in "$@"; do
+        echo "Installing ${package} with pipx"
+        pipx install --python "${pyenv_python}" "${package}"
+    done
+}
+
+# first, uninstall all applications managed by pipx
+pipx uninstall-all
+
+install_or_update_app_with_pipx "black" \
+    "codespell" \
+    "flake8" \
+    "isort" \
+    "mypy" \
+    "pycodestyle" \
+    "pylint" \
+    "virtualenv" \
+    "parquet-tools" \
+    "pipenv" \
+    "hatch" \
+    "argcomplete" \
+    "tox" \
+    "poetry"
