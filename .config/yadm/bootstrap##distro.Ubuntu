@@ -106,3 +106,55 @@ install_or_update_app_with_pipx "black" \
     "argcomplete" \
     "tox" \
     "poetry"
+
+# install tmux plugin manager
+if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
+    echo "Installing tmux plugin manager..."
+    mkdir -p "${HOME}/.tmux/plugins"
+    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
+fi
+
+# install ripgrep
+install_ripgrep() {
+    local temp_dir=$(mktemp -d)
+    local rg_version="14.1.1"
+    local rg_url="https://github.com/BurntSushi/ripgrep/releases/download/${rg_version}/ripgrep_${rg_version}-1_amd64.deb"
+    local temp_file="${temp_dir}/ripgrep_${rg_version}-1_amd64.deb"
+
+    curl -Lo "$temp_file" "$rg_url"
+    sudo dpkg -i "$temp_file"
+    rm -rf "$temp_dir"
+
+    echo "ripgrep has been installed successfully."
+}
+install_ripgrep
+
+# install lazygit
+install_lazygit() {
+    local temp_dir=$(mktemp -d)
+    local lazygit_version="0.44.1"
+    local lg_url="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${lazygit_version}_Linux_x86_64.tar.gz"
+    local temp_file_archive="${temp_dir}/lazygit.tar.gz"
+
+    curl -Lo "${temp_file_archive}" "${lg_url}"
+    tar xzf "${temp_file_archive}" -C "${temp_dir}" lazygit
+    sudo install "${temp_dir}/lazygit" /usr/local/bin
+
+    echo "lazygit has been installed successfully."
+}
+install_lazygit
+
+# install delta
+install_delta() {
+    local temp_dir=$(mktemp -d)
+    local delta_version="0.18.2"
+    local url="https://github.com/dandavison/delta/releases/download/${delta_version}/git-delta_${delta_version}_amd64.deb"
+    local temp_file="${temp_dir}/git-delta_${delta_version}_amd64.deb"
+
+    curl -Lo "$temp_file" "$url"
+    sudo dpkg -i "$temp_file"
+    rm -rf "$temp_dir"
+
+    echo "delta has been installed successfully."
+}
+install_delta
