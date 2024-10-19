@@ -22,4 +22,5 @@ python3-neovim
 python3-pip
 unzip
 wget
+xclip
 zsh
