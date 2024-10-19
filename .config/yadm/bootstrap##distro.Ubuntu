@@ -30,10 +30,6 @@ else
     echo "Zsh is already the default shell."
 fi
 
-# Install stable version of nvim
-echo "Building Neovim from source..."
-sudo snap install --beta nvim --classic
-
 # Install fzf
 if [ ! -d "$HOME/.fzf" ]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
