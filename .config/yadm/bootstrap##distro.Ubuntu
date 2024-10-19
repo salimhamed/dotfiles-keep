@@ -152,7 +152,7 @@ install_delta
 install_nvim() {
     local temp_dir=$(mktemp -d)
     local nvim_version="0.10.2"
-    local nvim_url="https://github.com/neovim/neovim/releases/download/v0.10.2/nvim-linux64.tar.gz"
+    local nvim_url="https://github.com/neovim/neovim/releases/download/v${nvim_version}/nvim-linux64.tar.gz"
     local temp_file="${temp_dir}/nvim-linux64.tar.gz"
 
     curl -Lo "${temp_file}" "${nvim_url}"
