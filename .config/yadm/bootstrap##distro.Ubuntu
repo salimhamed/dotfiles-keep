@@ -9,8 +9,8 @@ sudo apt update -y
 
 # install packages from a list
 if [ -f "$HOME/.ubuntu-packages" ]; then
-  echo "Installing packages from .ubuntu-packages..."
-  xargs sudo apt install -y <"$HOME/.ubuntu-packages"
+    echo "Installing packages from .ubuntu-packages..."
+    xargs sudo apt install -y <"$HOME/.ubuntu-packages"
 fi
 
 # upgrade all installed packages
@@ -23,17 +23,17 @@ sudo apt autoremove -y
 
 # Change the default shell to Zsh
 if [ "$SHELL" != "$(which zsh)" ]; then
-  echo "Changing default shell to Zsh..."
-  chsh -s "$(which zsh)"
-  echo "Default shell changed to Zsh. Log out and log back in for the changes to take effect."
+    echo "Changing default shell to Zsh..."
+    chsh -s "$(which zsh)"
+    echo "Default shell changed to Zsh. Log out and log back in for the changes to take effect."
 else
-  echo "Zsh is already the default shell."
+    echo "Zsh is already the default shell."
 fi
 
 # Install fzf
 if [ ! -d "$HOME/.fzf" ]; then
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install --bin
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install --bin
 fi
 
 # install nvm
@@ -43,14 +43,14 @@ source "${HOME}/.nvm/nvm.sh"
 
 # install global version of node
 install_node() {
-  local node_version="v20.18.0"
+    local node_version="v20.18.0"
 
-  echo "Installing/updating global version of node..."
+    echo "Installing/updating global version of node..."
 
-  nvm install "${node_version}"
-  nvm alias default "${node_version}"
+    nvm install "${node_version}"
+    nvm alias default "${node_version}"
 
-  echo "Node ${node_version} has been installed and set as default"
+    echo "Node ${node_version} has been installed and set as default"
 }
 install_node
 
@@ -64,7 +64,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 cargo install fd-find ripgrep
 
 # install lua tools
-luarocks install luacheck
+sudo luarocks install luacheck
 
 # install starship
 curl -sS https://starship.rs/install.sh | sh -s -- -y
@@ -84,87 +84,87 @@ pyenv exec pip install --upgrade pip
 
 # install python applications
 install_or_update_app_with_pipx() {
-  local pyenv_python
-  pyenv_python="$(pyenv which python)"
+    local pyenv_python
+    pyenv_python="$(pyenv which python)"
 
-  for package in "$@"; do
-    echo "Installing ${package} with pipx"
-    pipx install --python "${pyenv_python}" "${package}"
-  done
+    for package in "$@"; do
+        echo "Installing ${package} with pipx"
+        pipx install --python "${pyenv_python}" "${package}"
+    done
 }
 
 # first, uninstall all applications managed by pipx
 pipx uninstall-all
 
 install_or_update_app_with_pipx "black" \
-  "codespell" \
-  "flake8" \
-  "isort" \
-  "mypy" \
-  "pycodestyle" \
-  "pylint" \
-  "virtualenv" \
-  "parquet-tools" \
-  "pipenv" \
-  "hatch" \
-  "argcomplete" \
-  "tox" \
-  "poetry"
+    "codespell" \
+    "flake8" \
+    "isort" \
+    "mypy" \
+    "pycodestyle" \
+    "pylint" \
+    "virtualenv" \
+    "parquet-tools" \
+    "pipenv" \
+    "hatch" \
+    "argcomplete" \
+    "tox" \
+    "poetry"
 
 # install tmux plugin manager
 if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
-  echo "Installing tmux plugin manager..."
-  mkdir -p "${HOME}/.tmux/plugins"
-  git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
+    echo "Installing tmux plugin manager..."
+    mkdir -p "${HOME}/.tmux/plugins"
+    git clone https://github.com/tmux-plugins/tpm "${HOME}/.tmux/plugins/tpm"
 fi
 
 # install lazygit
 install_lazygit() {
-  local temp_dir=$(mktemp -d)
-  local lazygit_version="0.44.1"
-  local lg_url="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${lazygit_version}_Linux_x86_64.tar.gz"
-  local temp_file_archive="${temp_dir}/lazygit.tar.gz"
+    local temp_dir=$(mktemp -d)
+    local lazygit_version="0.44.1"
+    local lg_url="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${lazygit_version}_Linux_x86_64.tar.gz"
+    local temp_file_archive="${temp_dir}/lazygit.tar.gz"
 
-  curl -Lo "${temp_file_archive}" "${lg_url}"
-  tar xzf "${temp_file_archive}" -C "${temp_dir}" lazygit
-  sudo install "${temp_dir}/lazygit" /usr/local/bin
+    curl -Lo "${temp_file_archive}" "${lg_url}"
+    tar xzf "${temp_file_archive}" -C "${temp_dir}" lazygit
+    sudo install "${temp_dir}/lazygit" /usr/local/bin
 
-  echo "lazygit has been installed successfully."
+    echo "lazygit has been installed successfully."
 }
 install_lazygit
 
 # install delta
 install_delta() {
-  local temp_dir=$(mktemp -d)
-  local delta_version="0.18.2"
-  local url="https://github.com/dandavison/delta/releases/download/${delta_version}/git-delta_${delta_version}_amd64.deb"
-  local temp_file="${temp_dir}/git-delta_${delta_version}_amd64.deb"
+    local temp_dir=$(mktemp -d)
+    local delta_version="0.18.2"
+    local url="https://github.com/dandavison/delta/releases/download/${delta_version}/git-delta_${delta_version}_amd64.deb"
+    local temp_file="${temp_dir}/git-delta_${delta_version}_amd64.deb"
 
-  curl -Lo "$temp_file" "$url"
-  sudo dpkg -i "$temp_file"
-  rm -rf "$temp_dir"
+    curl -Lo "$temp_file" "$url"
+    sudo dpkg -i "$temp_file"
+    rm -rf "$temp_dir"
 
-  echo "delta has been installed successfully."
+    echo "delta has been installed successfully."
 }
 install_delta
 
 # install nvim
 install_nvim() {
-  local temp_dir=$(mktemp -d)
-  local nvim_version="0.10.2"
-  local nvim_url="https://github.com/neovim/neovim/releases/download/v0.10.2/nvim-linux64.tar.gz"
-  local temp_file="${temp_dir}/nvim-linux64.tar.gz"
+    local temp_dir=$(mktemp -d)
+    local nvim_version="0.10.2"
+    local nvim_url="https://github.com/neovim/neovim/releases/download/v0.10.2/nvim-linux64.tar.gz"
+    local temp_file="${temp_dir}/nvim-linux64.tar.gz"
 
-  curl -Lo "${temp_file}" "${nvim_url}"
-  sudo rm -rf /opt/nvim
-  sudo tar -C /opt -xzf "${temp_file}"
+    curl -Lo "${temp_file}" "${nvim_url}"
+    sudo rm -rf /opt/nvim
+    sudo tar -C /opt -xzf "${temp_file}"
 
-  echo "nvim has been installed successfully."
+    echo "nvim has been installed successfully."
 }
 install_nvim
 
 # install lunarvim
 if [ ! -d "${HOME}/.local/share/lunarvim/lvim" ]; then
-  bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) --no-install-dependencies
-  echo "lunar vim has been installed"
+    bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/master/utils/installer/install.sh) --no-install-dependencies
+    echo "lunar vim has been installed"
 fi
