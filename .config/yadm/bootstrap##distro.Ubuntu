@@ -63,6 +63,9 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y
 # install rust tools
 cargo install fd-find ripgrep
 
+# install lua tools
+luarocks install luacheck
+
 # install starship
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
