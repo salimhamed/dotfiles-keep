@@ -14,7 +14,7 @@ libpq-dev
 libsm6
 libxext6
 libxrender1
-neovim
+luarocks
 ninja-build
 pipx
 python3-dev
