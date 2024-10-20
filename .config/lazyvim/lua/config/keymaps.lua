@@ -20,11 +20,13 @@ map("n", "<S-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Wi
 vim.keymap.del("n", "<C-Right>")
 map("n", "<S-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 
--- floating terminal
-local lazyterm = function()
-  LazyVim.terminal(nil, { cwd = LazyVim.root() })
-end
+-- Remap toggle terminal
+local lazyterm = require("lazyvim.util.terminal")
 
 vim.keymap.del("n", "<c-/>")
 vim.keymap.del("n", "<c-_>")
-map("n", "<F12>", lazyterm, { desc = "Terminal (Root Dir)" })
+map("n", "<F12>", lazyterm.open, { desc = "Terminal (Root Dir)" })
+
+vim.keymap.del("t", "<C-/>")
+vim.keymap.del("t", "<c-_>")
+map("t", "<F12>", "<cmd>close<cr>", { desc = "Hide Terminal" })
