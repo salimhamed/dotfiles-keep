@@ -3,6 +3,7 @@ return {
   event = "VeryLazy",
   version = false,
   opts = {
+    hints = { enabled = false },
     mappings = {
       ask = "<leader>aa",
       edit = "<leader>ae",
